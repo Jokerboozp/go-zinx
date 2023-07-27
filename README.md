@@ -1,4 +1,5 @@
-- cnt, err := conn.Read(buf)
+### v0.1
+#### cnt, err := conn.Read(buf)
 ```text
 
 conn.Read(buf)这个语句的作用是从conn网络连接中读取数据并放入buf缓冲区。它返回两个值:
@@ -33,7 +34,7 @@ if err != nil {
 conn.Read()会被阻塞,直到有数据可读或者出现错误。所以它是异步读取网络数据的常用方法。
 ```
 
-- select {}
+#### select {}
 ```text
 阻塞状态
 select{}会阻塞当前的Goroutine,但不会阻止程序继续运行。原因是:
@@ -53,7 +54,7 @@ select{}阻塞了Serve所在的Goroutine,但不影响其他Goroutine
 因此服务器可以持续运行,程序不会退出
 ```
 
-- func NewServer(name string) ziface.IServer
+#### func NewServer(name string) ziface.IServer
 
 ```text
 Server结构体实现了IServer接口所要求的所有方法,所以它满足IServer接口的要求。
