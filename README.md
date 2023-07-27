@@ -66,3 +66,6 @@ Server结构体实现了IServer接口所要求的所有方法,所以它满足ISe
 
 所以NewServer返回一个Server指针,可以赋值给IServer类型,这是因为Server实现了IServer接口。
 ```
+
+### v0.2
+[![pCvh5tO.png](https://s1.ax1x.com/2023/07/27/pCvh5tO.png)](https://imgse.com/i/pCvh5tO)
