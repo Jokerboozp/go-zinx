@@ -8,7 +8,7 @@ import "zinx/znet"
 
 func main() {
 	//创建一个Server具柄，基于zinx的api
-	s := znet.NewServer("[zinx b0.1]")
+	s := znet.NewServer("[zinx b0.2]")
 	//启动Server
 	s.Serve()
 }

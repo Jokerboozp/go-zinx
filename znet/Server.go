@@ -29,6 +29,16 @@ func NewServer(name string) ziface.IServer {
 	return s
 }
 
+// CallBackToClient 定义当前客户端链接所绑定的handle api(目前这个handle是写死的，以后优化应该由用户自定义handle方法)
+func CallBackToClient(conn *net.TCPConn, data []byte, cnt int) error {
+	fmt.Println("connection handle callback")
+	if _, err := conn.Write(data[:cnt]); err != nil {
+		fmt.Println("write err,", err)
+		return err
+	}
+	return nil
+}
+
 // Start 启动服务器
 func (s *Server) Start() {
 	fmt.Println("[Start] Server Listener at IP", s.IP, "Port ", s.Port, "is starting")
@@ -47,6 +57,10 @@ func (s *Server) Start() {
 			return
 		}
 		fmt.Println("start zinx server success, ", s.Name, " success,Listening")
+
+		var connID uint32
+		connID = 0
+
 		//阻塞的等待客户端链接，处理客户端链接业务（读写）
 		for {
 			//如果客户端链接过来，阻塞会返回
@@ -56,24 +70,31 @@ func (s *Server) Start() {
 				continue
 			}
 
-			//已经与客户端建立链接，做一个最基本的最大512字节长度的回显业务
-			go func() {
-				for {
-					buf := make([]byte, 512)
-					cnt, err := conn.Read(buf)
-					if err != nil {
-						fmt.Println("receive buf err:", err)
-						continue
-					}
-					fmt.Printf("receive client buf %s,cnt %d\n", buf, cnt)
+			//将处理新链接的业务方法和conn进行绑定，得到我们的链接模块
+			dealConn := NewConnection(conn, connID, CallBackToClient)
+			connID++
 
-					//回显功能
-					if _, err := conn.Write(buf[:cnt]); err != nil {
-						fmt.Println("write back buf error:", err)
-						continue
-					}
-				}
-			}()
+			//启动当前的业务链接处理
+			go dealConn.Start()
+
+			//已经与客户端建立链接，做一个最基本的最大512字节长度的回显业务
+			//go func() {
+			//	for {
+			//		buf := make([]byte, 512)
+			//		cnt, err := conn.Read(buf)
+			//		if err != nil {
+			//			fmt.Println("receive buf err:", err)
+			//			continue
+			//		}
+			//		fmt.Printf("receive client buf %s,cnt %d\n", buf, cnt)
+			//
+			//		//回显功能
+			//		if _, err := conn.Write(buf[:cnt]); err != nil {
+			//			fmt.Println("write back buf error:", err)
+			//			continue
+			//		}
+			//	}
+			//}()
 		}
 	}()
 }
