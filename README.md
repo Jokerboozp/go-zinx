@@ -183,3 +183,6 @@ err = c.handleAPI(c.Conn, buf, cnt)
 
 所以即使有了回调函数,也必须传参正确调用,不能简单地直接调用。
 ```
+
+### v0.3
+![b799e8d1874559a7b0bb8f0e195cc6fd.png](https://i.mji.rip/2023/07/31/b799e8d1874559a7b0bb8f0e195cc6fd.png)
