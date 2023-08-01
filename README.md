@@ -186,3 +186,6 @@ err = c.handleAPI(c.Conn, buf, cnt)
 
 ### v0.3
 ![b799e8d1874559a7b0bb8f0e195cc6fd.png](https://i.mji.rip/2023/07/31/b799e8d1874559a7b0bb8f0e195cc6fd.png)
+
+### v0.4
+![b9e1a9bf53667eaa63fc948ffb092de5.png](https://i.mji.rip/2023/08/01/b9e1a9bf53667eaa63fc948ffb092de5.png)
