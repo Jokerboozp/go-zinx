@@ -220,3 +220,27 @@ V : "Hello, world!"
 
 TLV 格式具有很好的灵活性与扩展性，因为类型字段可以容易地增加新的类型，而长度字段可以使得值的大小变为动态，因此 TLV 在很多协议中都能看到它的身影
 ```
+
+#### dataBuf := bytes.NewReader(binaryData)
+
+![0e159ad6d3347a7cb1760542c5b500e9.png](https://i.mji.rip/2023/08/01/0e159ad6d3347a7cb1760542c5b500e9.png)
+
+```text
+bytes.NewReader(binaryData) 是创建一个新的 Reader，并让这个 Reader 的缓冲区内容为 binaryData 这个切片。
+bytes.Reader 是一个可以从中读取数据的对象，实现了 io.Reader, io.ReaderAt, io.Seeker, io.WriterTo, io.ByteScanner,和 io.RuneScanner 接口。创建这个 reader 之后，你就可以用各种方法从中读取数据，比如 Read(), ReadAt(), ReadByte() 等等。
+```
+
+#### binary.LittleEndian和binary.BigEndian
+
+![0e159ad6d3347a7cb1760542c5b500e9.png](https://i.mji.rip/2023/08/01/0e159ad6d3347a7cb1760542c5b500e9.png)
+
+```text
+大端字节序（Big-Endian）和小端字节序（Little-Endian）是计算机科学中关于存储或传输多字节数据的两种方法。这两种方式的主要区别在于以哪种顺序存储或传输最低位和最高位。
+大端字节序（Big-Endian）： 最低有效字节（Least Significant Byte，简称 LSB）存储在内存的最高地址上，最高有效字节（Most Significant Byte，简称 MSB）存储在内存的最低地址上。也就是说，高位字节在前，低位字节在后。这种存储方式类似于人类阅读数字和文字的习惯，第一个字节是最高位字节，因此称为 "大端"。
+小端字节序（Little-Endian）： 最低有效字节存储在内存的最低地址上，最高有效字节存储在内存的最高地址上。也就是说，低位字节在前，高位字节在后。因此称为 "小端"。
+这两种字节序常在网络编程和硬件编程中遇到，由于不同的机器和网络协议可能采用不同的字节序，因此在处理多字节数值时，需要注意转换问题。
+例如，对于16位十六进制数0x1234：
+在大端字节序中存储为：12 34
+在小端字节序中存储为：34 12
+所以，在处理多字节数据时，需要明确数据的字节序并进行正确的转换，以保证数据的正确性。
+```
