@@ -244,3 +244,11 @@ bytes.Reader 是一个可以从中读取数据的对象，实现了 io.Reader, i
 在小端字节序中存储为：34 12
 所以，在处理多字节数据时，需要明确数据的字节序并进行正确的转换，以保证数据的正确性。
 ```
+
+#### append(sendData1, sendData2...)
+
+```text
+在 Go 语言中，append 函数用于向一个 slice 添加元素。其第一个参数是你想要添加元素的 slice，之后的参数是你想要添加的元素。
+sendData1 = append(sendData1, sendData2...) 这行代码的含义是，将 sendData2 中的所有元素添加到 sendData1 的末尾，并将结果赋值给 sendData1。
+... 是 Go 语言的一种语法糖，被称作"可变参数"或"展开操作符"。当它用在 slice 前面时，它会将 slice 展开为一个元素列表。因此，append(sendData1, sendData2...) 就等同于将 sendData2 中的所有元素一个一个添加到 sendData1 中
+```
