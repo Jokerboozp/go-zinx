@@ -16,31 +16,35 @@ type PingRouter struct {
 }
 
 // PreHandle Test PreHandle
-func (p *PingRouter) PreHandle(request ziface.IRequest) {
-	fmt.Println("call router PreHandle")
-	_, err := request.GetConnection().GetTCPConnection().Write([]byte("before ping...\n"))
-	if err != nil {
-		fmt.Println("call back before ping err,", err)
-	}
-}
+//func (p *PingRouter) PreHandle(request ziface.IRequest) {
+//	fmt.Println("call router PreHandle")
+//	_, err := request.GetConnection().GetTCPConnection().Write([]byte("before ping...\n"))
+//	if err != nil {
+//		fmt.Println("call back before ping err,", err)
+//	}
+//}
 
 // Handle Test Handle
 func (p *PingRouter) Handle(request ziface.IRequest) {
 	fmt.Println("call router Handle")
-	_, err := request.GetConnection().GetTCPConnection().Write([]byte("ping ping ping...\n"))
+	// 先读取客户端的数据，再回写ping...ping...ping
+	fmt.Println("recv from client: msgID=", request.GetMsgID(), ", data=", string(request.GetData()))
+
+	err := request.GetConnection().SendMsg(200, []byte("ping...ping...ping"))
 	if err != nil {
-		fmt.Println("call back ping err,", err)
+		fmt.Println(err)
 	}
+
 }
 
-// PostHandle Test PostHandle
-func (p *PingRouter) PostHandle(request ziface.IRequest) {
-	fmt.Println("call router PostHandle")
-	_, err := request.GetConnection().GetTCPConnection().Write([]byte("after ping...\n"))
-	if err != nil {
-		fmt.Println("call back after ping err,", err)
-	}
-}
+//// PostHandle Test PostHandle
+//func (p *PingRouter) PostHandle(request ziface.IRequest) {
+//	fmt.Println("call router PostHandle")
+//	_, err := request.GetConnection().GetTCPConnection().Write([]byte("after ping...\n"))
+//	if err != nil {
+//		fmt.Println("call back after ping err,", err)
+//	}
+//}
 
 func main() {
 	//创建一个Server具柄，基于zinx的api
