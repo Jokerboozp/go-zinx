@@ -15,6 +15,10 @@ type PingRouter struct {
 	znet.BaseRouter
 }
 
+type HelloZinxRouter struct {
+	znet.BaseRouter
+}
+
 // PreHandle Test PreHandle
 //func (p *PingRouter) PreHandle(request ziface.IRequest) {
 //	fmt.Println("call router PreHandle")
@@ -36,11 +40,7 @@ func (p *PingRouter) Handle(request ziface.IRequest) {
 	}
 }
 
-type HelloZinxRouter struct {
-	znet.BaseRouter
-}
-
-func (p *HelloZinxRouter) HelloHandle(request ziface.IRequest) {
+func (p *HelloZinxRouter) Handle(request ziface.IRequest) {
 	fmt.Println("call hello router Handle")
 	// 先读取客户端的数据，再回写hello...hello...hello
 	fmt.Println("recv from client: msgID=", request.GetMsgID(), ", data=", string(request.GetData()))
