@@ -265,3 +265,22 @@ DataPack结构体在这里的作用相当于一个命名空间，它使得所有
 ### v0.6
 
 ![6ec73f2eec6bbe31da69aa506577c08a.png](https://i.miji.bid/2023/08/07/6ec73f2eec6bbe31da69aa506577c08a.png)
+
+#### PingRouter和HelloZinxRouter为什么都可以使用Handle方法
+
+````text
+ingRouter和HelloZinxRouter都含有一个匿名的znet.BaseRouter字段。这是Go语言的结构体嵌入和方法提升的机制。
+在Go中，当访问一个嵌入字段的方法时，如果该结构体没有定义此方法，会自动提升嵌入字段的同名方法。这就是你可以对PingRouter和HelloZinxRouter直接调用Handle方法的原因，即便你并没有在这两个结构体中显式的定义这个方法。
+然而在你的代码示例中，你覆盖了（或者说重新实现了）PingRouter和HelloZinxRouter的Handle方法。这使得当你在这两个类型上调用Handle方法时，实际上调用的是你自定义的方法，而不是他们嵌入的znet.BaseRouter字段的方法。
+这种设计也是一种常见的面向对象的设计模式：模板方法模式。基类定义了一套操作的框架，具体的步骤则由子类来实现。
+````
+
+#### 为什么修改了HelloZinxRouter的Handle方法名称就接收不到返回消息
+
+```text
+这是因为在你的框架设计中，Golang的接口方法被用作了消息的处理方法。
+在你的代码中，“PingRouter” 和 “HelloZinxRouter” 都是实现了 "znet.BaseRouter" 中定义的接口方法 "Handle"。根据你的架构设计，Handle 方法被当作了处理客户端发送消息的主要逻辑。
+当“HelloZinxRouter”的“Handle”方法被重命名，这个结构不再完全实现 "znet.BaseRouter"，使得不会调用到你的特定逻辑，而可能只会运行基础的或者是默认的处理逻辑。
+这就是为什么你发现把 “HelloZinxRouter”的“Handle”方法改名后就收不到返回消息了，因为你的特定逻辑不再被调用。
+函数名非常重要，如果你实现了一个接口，函数的名称、接收器、参数列表和返回参数都必须和接口定义的完全一致，才算真正实现了该接口，才能被框架正确的识别和调用。
+```
