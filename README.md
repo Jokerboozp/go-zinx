@@ -288,3 +288,7 @@ ingRouter和HelloZinxRouter都含有一个匿名的znet.BaseRouter字段。这�
 ### v0.7
 
 ![8988ff7040852d9b14af0c5180ba135c.png](https://i.miji.bid/2023/08/07/8988ff7040852d9b14af0c5180ba135c.png)
+
+### v0.8
+
+![a7f97e2f28641800f6b0ac92cf06c044.png](https://i.miji.bid/2023/08/07/a7f97e2f28641800f6b0ac92cf06c044.png)

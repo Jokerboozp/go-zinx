@@ -10,4 +10,7 @@ type IMessageHandler interface {
 
 	// AddRouter 为消息添加具体的处理逻辑
 	AddRouter(msgID uint32, router IRouter)
+
+	// StartWorkerPool 启动worker工作池
+	StartWorkerPool()
 }
