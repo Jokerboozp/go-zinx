@@ -34,7 +34,21 @@ func (p *PingRouter) Handle(request ziface.IRequest) {
 	if err != nil {
 		fmt.Println(err)
 	}
+}
 
+type HelloZinxRouter struct {
+	znet.BaseRouter
+}
+
+func (p *HelloZinxRouter) HelloHandle(request ziface.IRequest) {
+	fmt.Println("call hello router Handle")
+	// 先读取客户端的数据，再回写hello...hello...hello
+	fmt.Println("recv from client: msgID=", request.GetMsgID(), ", data=", string(request.GetData()))
+
+	err := request.GetConnection().SendMsg(201, []byte("hello...hello...hello"))
+	if err != nil {
+		fmt.Println(err)
+	}
 }
 
 //// PostHandle Test PostHandle
@@ -48,10 +62,11 @@ func (p *PingRouter) Handle(request ziface.IRequest) {
 
 func main() {
 	//创建一个Server具柄，基于zinx的api
-	s := znet.NewServer("[zinx v0.4]")
+	s := znet.NewServer("[zinx v0.6]")
 
 	//给当前zinx框架添加一个自定义的router
-	s.AddRouter(&PingRouter{})
+	s.AddRouter(0, &PingRouter{})
+	s.AddRouter(1, &HelloZinxRouter{})
 
 	//启动Server
 	s.Serve()
