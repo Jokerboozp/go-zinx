@@ -3,6 +3,7 @@ package znet
 import (
 	"fmt"
 	"net"
+	"zinx/utils"
 	"zinx/ziface"
 )
 
@@ -114,6 +115,12 @@ func (c *Connection) StartReader() {
 		req := Request{
 			conn: c,
 			msg:  msg,
+		}
+
+		//判断是否已经开启工作池
+		if utils.GlobalObject.WorkerPoolSize > 0 {
+			//已经开启了工作池机制，将消息发送给worker工作池即可
+			c.MsgHandler.SendMsgToTaskQueue(&req)
 		}
 
 		//执行注册的路由方法

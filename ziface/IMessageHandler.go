@@ -13,4 +13,7 @@ type IMessageHandler interface {
 
 	// StartWorkerPool 启动worker工作池
 	StartWorkerPool()
+
+	// SendMsgToTaskQueue 将消息交给TaskQueue，由Worker进行处理
+	SendMsgToTaskQueue(request IRequest)
 }
