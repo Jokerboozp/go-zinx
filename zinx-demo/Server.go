@@ -62,7 +62,7 @@ func (p *HelloZinxRouter) Handle(request ziface.IRequest) {
 
 func main() {
 	//创建一个Server具柄，基于zinx的api
-	s := znet.NewServer("[zinx v0.6]")
+	s := znet.NewServer("[zinx v0.7]")
 
 	//给当前zinx框架添加一个自定义的router
 	s.AddRouter(0, &PingRouter{})
