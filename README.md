@@ -309,3 +309,7 @@ ingRouter和HelloZinxRouter都含有一个匿名的znet.BaseRouter字段。这�
 简单来说，OnConnStart 就像一个可以被赋值的函数容器，你可以给它赋值任何符合其类型（接收 ziface.IConnection 参数并且没有返回值）的函数，然后在 CallOnConnStart 中调用它。
 这种技术被称为 "回调函数" 或 "钩子函数"，它使你可以在特定的事件（例如：连接被创建）发生时，执行自定义的代码。
 ```
+
+### v1.0
+
+![e51dbf6402813fda5fd2206070d08d3e.png](https://i.miji.bid/2023/08/08/e51dbf6402813fda5fd2206070d08d3e.png)

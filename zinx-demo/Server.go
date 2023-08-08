@@ -67,17 +67,30 @@ func DoConnectionBegin(connection ziface.IConnection) {
 	if err != nil {
 		fmt.Println(err)
 	}
+
+	//给当前的链接设置一些属性
+	connection.SetProperty("name", "jokerboozp")
+	connection.SetProperty("host", "jokerboozp.top")
 }
 
 // DoConnectionLost 链接断开前需要执行的函数
 func DoConnectionLost(connection ziface.IConnection) {
 	fmt.Println("do connection lost call")
 	fmt.Println("connID = ", connection.GetConnID(), " is lost")
+
+	//获取链接属性
+	if name, err := connection.GetProperty("name"); err == nil {
+		fmt.Println("name = ", name)
+	}
+
+	if host, err := connection.GetProperty("host"); err == nil {
+		fmt.Println("host = ", host)
+	}
 }
 
 func main() {
 	//创建一个Server具柄，基于zinx的api
-	s := znet.NewServer("[zinx v0.9]")
+	s := znet.NewServer("[zinx v1.0]")
 
 	//注册链接的hook函数
 	s.SetOnConnStart(DoConnectionBegin)
