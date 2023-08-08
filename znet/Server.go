@@ -19,6 +19,12 @@ type Server struct {
 	Port int
 	//当前的Server的消息管理模块，用来绑定MsgID和对应的业务处理关系API关系
 	MsgHandler ziface.IMessageHandler
+	//该server的链接管理器
+	ConnMgr ziface.IConnManager
+}
+
+func (s *Server) GetConnMgr() ziface.IConnManager {
+	return s.ConnMgr
 }
 
 // AddRouter 路由功能：给当前的服务注册一个路由方法，供客户端的链接处理使用
@@ -35,6 +41,7 @@ func NewServer(name string) ziface.IServer {
 		IP:         utils.GlobalObject.Host,
 		Port:       utils.GlobalObject.TcpPort,
 		MsgHandler: NewMsgHandle(),
+		ConnMgr:    NewConnManager(),
 	}
 	return s
 }
@@ -82,9 +89,20 @@ func (s *Server) Start() {
 				fmt.Println("Accept err:", err)
 				continue
 			}
+			fmt.Println("链接大小是=========================> ", s.ConnMgr.Len())
+
+			//设置最大链接个数的判断，如果超过最大链接的数量，则关闭新链接
+			if s.ConnMgr.Len() >= utils.GlobalObject.MaxConn {
+				fmt.Println("===============> too many connection")
+				err := conn.Close()
+				if err != nil {
+					continue
+				}
+				continue
+			}
 
 			//将处理新链接的业务方法和conn进行绑定，得到我们的链接模块
-			dealConn := NewConnection(conn, connID, s.MsgHandler)
+			dealConn := NewConnection(s, conn, connID, s.MsgHandler)
 			connID++
 
 			//启动当前的业务链接处理
@@ -114,7 +132,7 @@ func (s *Server) Start() {
 
 // Stop 停止服务器
 func (s *Server) Stop() {
-
+	s.ConnMgr.ClearConn()
 }
 
 // Serve 运行服务器
