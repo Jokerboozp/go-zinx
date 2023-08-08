@@ -21,6 +21,10 @@ type Server struct {
 	MsgHandler ziface.IMessageHandler
 	//该server的链接管理器
 	ConnMgr ziface.IConnManager
+	//该server创建链接之后自动调用的hook函数
+	OnConnStart func(conn ziface.IConnection)
+	//该server销毁链接之前自动调用的hook函数
+	OnConnStop func(conn ziface.IConnection)
 }
 
 func (s *Server) GetConnMgr() ziface.IConnManager {
@@ -44,6 +48,32 @@ func NewServer(name string) ziface.IServer {
 		ConnMgr:    NewConnManager(),
 	}
 	return s
+}
+
+// SetOnConnStart 注册OnConnStart钩子函数的方法
+func (s *Server) SetOnConnStart(hookFunc func(connection ziface.IConnection)) {
+	s.OnConnStart = hookFunc
+}
+
+// SetOnConnStop 注册OnConnStop钩子函数的方法
+func (s *Server) SetOnConnStop(hookFunc func(connection ziface.IConnection)) {
+	s.OnConnStop = hookFunc
+}
+
+// CallOnConnStart 调用OnConnStart钩子函数的方法
+func (s *Server) CallOnConnStart(connection ziface.IConnection) {
+	if s.OnConnStart != nil {
+		fmt.Println("------->call on start")
+		s.OnConnStart(connection)
+	}
+}
+
+// CallOnConnStop 调用OnConnStop钩子函数的方法
+func (s *Server) CallOnConnStop(connection ziface.IConnection) {
+	if s.OnConnStop != nil {
+		fmt.Println("------->call on stop")
+		s.OnConnStop(connection)
+	}
 }
 
 // CallBackToClient 定义当前客户端链接所绑定的handle api(目前这个handle是写死的，以后优化应该由用户自定义handle方法)
